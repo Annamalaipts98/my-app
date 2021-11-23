@@ -1,0 +1,19 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+   - name: install python pip.
+     yum:
+      name: python-pip
+      state: present
+   - name: install docker-py.
+     pip:
+      name: docker-py
+      state: present
+   - name: Create a data container
+     docker_container:
+      name: mydata
+      image: "annamalaipts/samplewebapp:{{dockertag}}"
+      state: started
+      published_ports:
+        - 0.0.0.0:8080:8080
